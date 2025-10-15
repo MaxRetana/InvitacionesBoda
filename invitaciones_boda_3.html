@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Digital - Berenice & Maximiliano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;a
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f8f9fb 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .invitation-container {
+            background: white;
+            max-width: 450px;
+            width: 100%;
+            border-radius: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+            animation: slideIn 1.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floral-header {
+            background: linear-gradient(135deg, #f8f9fb 0%, #ffffff 100%);
+            padding: 40px 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floral-decoration {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 200px;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><g fill="none" stroke="%23a8b5a8" stroke-width="1" opacity="0.3"><ellipse cx="100" cy="80" rx="15" ry="8" transform="rotate(-30 100 80)"/><ellipse cx="120" cy="90" rx="12" ry="6" transform="rotate(20 120 90)"/><ellipse cx="90" cy="100" rx="10" ry="5" transform="rotate(-45 90 100)"/><ellipse cx="110" cy="70" rx="8" ry="4" transform="rotate(60 110 70)"/><path d="M85 85c5-10 15-8 20-2s8 15 2 20-15 8-20 2-8-15-2-20z" fill="%23e8f0e8"/></g></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        .floral-decoration-left {
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150"><g fill="none" stroke="%23a8b5a8" stroke-width="1" opacity="0.2"><ellipse cx="75" cy="75" rx="20" ry="10" transform="rotate(45 75 75)"/><ellipse cx="60" cy="90" rx="15" ry="8" transform="rotate(-20 60 90)"/><ellipse cx="90" cy="60" rx="12" ry="6" transform="rotate(70 90 60)"/></g></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        .header-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-name {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: #6b7280;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .tagline {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            padding: 30px;
+            text-align: center;
+            background: white;
+            position: relative;
+        }
+
+        .couple-names {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #2d3748;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            position: relative;
+        }
+
+        .couple-names::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c4a963, transparent);
+            margin: 15px auto;
+        }
+
+        .invitation-text {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .event-details {
+            background: #f8f9fb;
+            padding: 25px 20px;
+            margin: 25px -10px;
+            border-left: 3px solid #c4a963;
+            text-align: left;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #2d3748;
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: #4a5568;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            margin: 25px 0;
+        }
+
+        .padrinos-section {
+            background: #f8f9fb;
+            padding: 25px 20px;
+            margin: 25px -10px;
+            border-left: 3px solid #c4a963;
+        }
+
+        .padrinos-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .padrinos-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .padrino-item {
+            text-align: left;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .padrino-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .padrino-role {
+            font-weight: 500;
+            color: #c4a963;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .padrino-names {
+            color: #2d3748;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .testigos-section {
+            background: #ffffff;
+            padding: 20px;
+            margin: 20px -10px;
+            border: 1px solid #e2e8f0;
+            border-left: 3px solid #a8b5a8;
+        }
+
+        .testigos-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .testigos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .testigo-item {
+            padding: 10px;
+        }
+
+        .testigo-label {
+            font-weight: 500;
+            color: #a8b5a8;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .testigo-name {
+            color: #2d3748;
+            font-size: 0.85rem;
+            line-height: 1.3;
+        }
+
+        .special-note {
+            font-style: italic;
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(196, 169, 99, 0.05);
+            border-radius: 8px;
+        }
+
+        .rsvp-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .rsvp-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #c4a963 0%, #b8975a 100%);
+            color: white;
+            padding: 12px 35px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .rsvp-button:hover {
+            background: linear-gradient(135deg, #b8975a 0%, #a68650 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(196, 169, 99, 0.3);
+        }
+
+        .footer {
+            background: #f8f9fb;
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-text {
+            color: #6b7280;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .decorative-element {
+            display: inline-block;
+            color: #c4a963;
+            margin: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 500px) {
+            .invitation-container {
+                margin: 10px;
+                max-width: 100%;
+            }
+            
+            .couple-names {
+                font-size: 2.2rem;
+            }
+            
+            .main-content {
+                padding: 25px 20px;
+            }
+            
+            .event-details, .padrinos-section, .testigos-section {
+                margin: 20px -5px;
+                padding: 20px 15px;
+            }
+
+            .testigos-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        .botanical-bg {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="%23a8b5a8" opacity="0.1"><ellipse cx="70" cy="30" rx="8" ry="4" transform="rotate(30 70 30)"/><ellipse cx="80" cy="40" rx="6" ry="3" transform="rotate(-20 80 40)"/><ellipse cx="60" cy="50" rx="10" ry="5" transform="rotate(60 60 50)"/><ellipse cx="75" cy="20" rx="5" ry="2" transform="rotate(-45 75 20)"/></g></svg>') no-repeat;
+            background-size: contain;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-container">
+        <div class="floral-header">
+            <div class="floral-decoration"></div>
+            <div class="floral-decoration-left"></div>
+            <div class="header-text">
+                <div class="brand-name">INVITACIÓN DE BODA</div>
+                <div class="tagline">con diseño love letters</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="botanical-bg"></div>
+            
+            <div class="couple-names">
+                Berenice & Maximiliano
+            </div>
+            
+            <div class="invitation-text">
+                Después de compartir tantos momentos juntos, hemos decidido dar el siguiente paso y unir nuestras vidas en matrimonio.
+            </div>
+            
+            <div class="decorative-element">❦</div>
+            
+            <div class="event-details">
+                <div class="detail-item">
+                    <span class="detail-label">Fecha:</span>
+                    <span class="detail-value">Sábado, 20 de Abril de 2024</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Hora:</span>
+                    <span class="detail-value">5:00 PM</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Lugar:</span>
+                    <span class="detail-value">Capilla San José<br>Av. Insurgentes Sur 1647, Ciudad</span>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="event-details">
+                <div class="detail-item">
+                    <span class="detail-label">Recepción:</span>
+                    <span class="detail-value">Jardín Botánico Los Cedros<br>Calle de las Rosas 123</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Horario:</span>
+                    <span class="detail-value">7:00 PM - 1:00 AM</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Dress Code:</span>
+                    <span class="detail-value">Formal</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="padrinos-section">
+                <div class="padrinos-title">Nuestros Padrinos</div>
+                <div class="padrinos-grid">
+                    <div class="padrino-item">
+                        <div class="padrino-role">Padrinos de Velación</div>
+                        <div class="padrino-names">Sr. Carlos Mendoza & Sra. Elena Mendoza</div>
+                    </div>
+                    <div class="padrino-item">
+                        <div class="padrino-role">Padrinos de Lazo</div>
+                        <div class="padrino-names">Sr. Miguel Rodríguez & Sra. Ana Rodríguez</div>
+                    </div>
+                    <div class="padrino-item">
+                        <div class="padrino-role">Padrinos de Anillos</div>
+                        <div class="padrino-names">Sr. José García & Sra. María García</div>
+                    </div>
+                    <div class="padrino-item">
+                        <div class="padrino-role">Padrinos de Arras</div>
+                        <div class="padrino-names">Sr. David López & Sra. Carmen López</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testigos-section">
+                <div class="testigos-title">Nuestros Testigos</div>
+                <div class="testigos-grid">
+                    <div class="testigo-item">
+                        <div class="testigo-label">Testigos de la Novia</div>
+                        <div class="testigo-name">
+                            Sofía Martínez<br>
+                            Isabella Ruiz
+                        </div>
+                    </div>
+                    <div class="testigo-item">
+                        <div class="testigo-label">Testigos del Novio</div>
+                        <div class="testigo-name">
+                            Roberto Fernández<br>
+                            Andrés Morales
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="special-note">
+                Tu presencia es el regalo más preciado que podemos recibir. Acompáñanos a celebrar el inicio de nuestra nueva vida juntos.
+            </div>
+            
+            <div class="rsvp-section">
+                <a href="mailto:berenice.maximiliano2024@gmail.com?subject=Confirmación de Asistencia - Berenice & Maximiliano" class="rsvp-button">
+                    Confirmar Asistencia
+                </a>
+            </div>
+            
+            <div class="decorative-element">❦ ❦ ❦</div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-text">
+                Esperamos celebrar este momento tan especial en compañía de nuestros seres queridos.
+                <br><br>
+                Con cariño,<br>
+                <strong>Berenice & Maximiliano</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animación suave al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.invitation-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 1.2s ease-out';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Efecto hover suave en el botón RSVP
+        document.querySelector('.rsvp-button').addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+
+        document.querySelector('.rsvp-button').addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    </script>
+</body>
+</html>
