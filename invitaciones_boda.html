@@ -455,8 +455,55 @@
         <!-- RSVP y mensaje final -->
         <div class="section rsvp-section">
             <div class="section-title">CONFIRMAR ASISTENCIA</div>
-            <div class="info-text">
-                Confirma aquí
+            <div class="info-text" style="margin-bottom: 20px;">
+                Por favor confirma tu asistencia antes del 15 de enero
+            </div>
+            
+            <!-- Formulario de confirmación -->
+            <form id="rsvpForm" action="https://formspree.io/f/movkyprl" method="POST" style="text-align: left; max-width: 300px; margin: 0 auto;">
+                <div style="margin-bottom: 15px;">
+                    <label for="nombre" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">Nombre completo:</label>
+                    <input type="text" id="nombre" name="nombre" required style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="asistencia" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">¿Asistirás?</label>
+                    <select id="asistencia" name="asistencia" required style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em;">
+                        <option value="">Selecciona una opción</option>
+                        <option value="si">Sí, asistiré</option>
+                        <option value="no">No podré asistir</option>
+                    </select>
+                </div>
+                
+                <div id="cantidadPersonas" style="margin-bottom: 15px; display: none;">
+                    <label for="personas" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">¿Cuántos acompañantes tendrás?</label>
+                    <select id="personas" name="personas" style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em;">
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                        <option value="9">9 personas</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="comentarios" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">Comentarios (opcional):</label>
+                    <textarea id="comentarios" name="comentarios" rows="3" style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em; resize: vertical;" placeholder="Alergias alimentarias, necesidades especiales, etc."></textarea>
+                </div>
+                
+                <button type="submit" style="width: 100%; background: white; color: #a8b8a0; padding: 12px; border: none; border-radius: 25px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    Confirmar Asistencia
+                </button>
+            </form>
+            
+            <!-- Mensaje de confirmación -->
+            <div id="mensajeConfirmacion" style="display: none; background: rgba(255,255,255,0.9); color: #5a6b52; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <strong>¡Gracias por confirmar!</strong><br>
+                Hemos recibido tu respuesta. Te esperamos con mucho cariño.
             </div>
             
             <div class="section-title" style="margin-top: 30px;">NO NIÑOS</div>
@@ -504,6 +551,54 @@
         // Actualizar cada segundo
         setInterval(updateCountdown, 1000);
         updateCountdown();
+        
+        // Manejar el formulario RSVP
+        document.addEventListener('DOMContentLoaded', function() {
+            const asistenciaSelect = document.getElementById('asistencia');
+            const cantidadPersonasDiv = document.getElementById('cantidadPersonas');
+            const rsvpForm = document.getElementById('rsvpForm');
+            const mensajeConfirmacion = document.getElementById('mensajeConfirmacion');
+            
+            // Mostrar/ocultar campo de cantidad de personas
+            asistenciaSelect.addEventListener('change', function() {
+                if (this.value === 'si') {
+                    cantidadPersonasDiv.style.display = 'block';
+                    document.getElementById('personas').required = true;
+                } else {
+                    cantidadPersonasDiv.style.display = 'none';
+                    document.getElementById('personas').required = false;
+                }
+            });
+            
+            // Manejar envío del formulario
+            rsvpForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(rsvpForm);
+                
+                // Enviar datos a Formspree
+                fetch(rsvpForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Mostrar mensaje de confirmación
+                        rsvpForm.style.display = 'none';
+                        mensajeConfirmacion.style.display = 'block';
+                    } else {
+                        throw new Error('Error al enviar el formulario');
+                    }
+                })
+                .catch(error => {
+                    alert('Hubo un problema al enviar tu confirmación. Por favor intenta nuevamente o contacta directamente a los novios.');
+                    console.error('Error:', error);
+                });
+            });
+        });
     </script>
 </body>
 </html>
