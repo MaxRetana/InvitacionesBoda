@@ -71,10 +71,33 @@
 
         .couple-names {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.2em;
+            font-size: 4.2em; /* Aumentado de 3.2em */
             color: #5a6b52;
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* Aumentado de 20px */
+            line-height: 1.1;
+            font-weight: 700; /* Agregado para más peso */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra sutil */
+        }
+
+        .couple-names-title {
+            font-family: 'Playfair Display', serif; /* Cambio de Arial */
+            font-size: 1.2em; /* Reducido de 1.6em */
+            color: #8a9481; /* Color más suave */
+            margin-bottom: 15px; /* Reducido de 20px */
             line-height: 1.2;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase; /* Agregado */
+        }
+
+        .couple-names-parents {
+            font-family: 'Open Sans', sans-serif; /* Cambio de Arial */
+            font-size: 0.85em; /* Reducido significativamente de 1.6em */
+            color: #8a9481; /* Color más suave que los nombres */
+            margin-bottom: 25px;
+            line-height: 1.4;
+            font-weight: 300; /* Más ligero */
+            opacity: 0.9; /* Ligeramente transparente */
         }
 
         .wedding-date {
@@ -280,6 +303,30 @@
             font-size: 1.3em;
             color: #6b7a62;
         }
+
+        /* Estilos específicos para imágenes de la pareja */
+        .couple-photo {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 10px;
+            display: block;
+            margin: 20px 0;
+        }
+
+        .couple-photo-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        /* Ajuste para la sección de foto */
+        .photo-section {
+            padding: 20px 30px;
+        }
     </style>
 </head>
 <body>
@@ -290,10 +337,22 @@
         
         <!-- Sección de portada -->
         <div class="section cover-section">
+            <div class="couple-names-title">
+                Nuestra Boda<br>
+            </div>
             <div class="couple-names">
-                Dora Berenice Carmona Castellanos<br>
+                Dora Berenice<br>
                 &<br>
-                Jose Maximiliano Retana Lopez
+                José Maximiliano<br>
+            </div>
+            <div class="couple-names-parents">
+                Con la bendición de Dios<br>
+                Y de nuestros padres<br>
+                Padres de la Novia:<br>
+                José Porfirio Carmona Santiago & Ma. Mercedes Castellanos Iñiguez<br>
+                Padres del Novio:<br>
+                José Navidad Retana Rodriguez & Ana Lilia Lopez Armenta<br>
+                
             </div>
             <div class="wedding-date">
                 Sabado, 31 de Enero 2026
@@ -301,9 +360,12 @@
         </div>
 
         <!-- Sección de foto -->
-        <div class="section">
-            <div class="photo-placeholder">
-                Foto de la pareja
+        <div class="section photo-section">
+            <div class="couple-photo-container">
+                <img src="IMG1.jpg" 
+                     alt="Foto romántica de la pareja" 
+                     class="couple-photo"
+                     style="object-position: center 30%;">
             </div>
         </div>
 
@@ -327,11 +389,11 @@
                 C. Guillermo Prieto 561, Guadalajarita, 28030 Colima, Col.
             </div>
             <a href="https://maps.google.com/?q=Parroquia+Inmaculado+Corazón+de+María,+C.+Guillermo+Prieto+561,+Guadalajarita,+28030+Colima,+Col." target="_blank" class="location-button" style="display: inline-block; text-decoration: none;">Ver ubicación</a>
-            <div class="photo-placeholder" style="height: 150px; margin-top: 20px; object-fit: cover; border-radius: 10px;">
-                <img src="https://drive.google.com/uc?export=view&id=1pQNCW0o_2HfSXupmHz80hPwMw5kDX1pV" 
-                    alt="Parroquia Inmaculado Corazón de María" 
-                    class="photo-placeholder" 
-                    style="height: 150px; margin-top: 20px; object-fit: cover; border-radius: 10px;">
+            <div class="couple-photo-container" style="height: 150px;">
+                <img src="parroquia.jpeg" 
+                     alt="Parroquia Inmaculado Corazón de María" 
+                     class="couple-photo" 
+                     style="height: 150px; object-position: center center;">
             </div>
         </div>
 
@@ -364,28 +426,28 @@
         <div class="section">
             <div class="section-title">ITINERARIO DE ACTIVIDADES</div>
             <div class="timeline-item">
-                <div class="timeline-time">11:00 AM</div>
+                <div class="timeline-time">06:00 PM</div>
                 <div class="timeline-event">Ceremonia Religiosa</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">1:00 PM</div>
+                <div class="timeline-time">7:30 PM</div>
                 <div class="timeline-event">Cóctel de Bienvenida</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">3:00 PM</div>
-                <div class="timeline-event">Almuerzo</div>
+                <div class="timeline-time">8:00 PM</div>
+                <div class="timeline-event">Inicio de Celebración</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">5:00 PM</div>
-                <div class="timeline-event">Primer Baile</div>
+                <div class="timeline-time">9:00 PM</div>
+                <div class="timeline-event">Brindis y Vals</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">6:00 PM</div>
-                <div class="timeline-event">Fiesta y Baile</div>
+                <div class="timeline-time">10:00 PM</div>
+                <div class="timeline-event">Cena</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">11:00 PM</div>
-                <div class="timeline-event">Despedida y Brindis</div>
+                <div class="timeline-event">Loquera</div>
             </div>
         </div>
 
@@ -395,19 +457,19 @@
             <div class="padrinos-container">
                 <div class="padrino-item">
                     <div class="padrino-tipo">Velación</div>
-                    <div class="padrino-nombres">Norma y Chuy</div>
+                    <div class="padrino-nombres">Norma Aguilar Armenta y Jesus Solis </div>
                 </div>
                 <div class="padrino-item">
                     <div class="padrino-tipo">Lazo</div>
-                    <div class="padrino-nombres">Juan y Cuca</div>
+                    <div class="padrino-nombres">Juan Moctezuma Ramirez y Ma. Refugio Castellanos Iñiguez</div>
                 </div>
                 <div class="padrino-item">
                     <div class="padrino-tipo">Anillos</div>
-                    <div class="padrino-nombres">Beto y Ana</div>
+                    <div class="padrino-nombres">Heriberto Lopez Armenta y Ana</div>
                 </div>
                 <div class="padrino-item">
                     <div class="padrino-tipo">Arras</div>
-                    <div class="padrino-nombres">Chava y Ofelia</div>
+                    <div class="padrino-nombres">Salvador Castellanos Iñiguez y Ofelia Curiel</div>
                 </div>
             </div>
         </div>
@@ -437,8 +499,11 @@
 
         <!-- Otra foto -->
         <div class="section">
-            <div class="photo-placeholder">
-                Foto romántica de la pareja
+            <div class="couple-photo-container">
+                <img src="IMG1.jpg" 
+                     alt="Foto romántica de la pareja" 
+                     class="couple-photo"
+                     style="object-position: center 30%;">
             </div>
         </div>
 
@@ -448,9 +513,6 @@
             <div class="info-text">
                 Lo más importante para nosotros es compartir este día tan especial con ustedes.
 Si desean obsequiarnos algo, pueden unirse a nuestra <em>lluvia de sobres</em> para ayudarnos a comenzar esta nueva etapa juntos.
-            </div>
-            <div class="qr-placeholder">
-                QR
             </div>
         </div>
 
