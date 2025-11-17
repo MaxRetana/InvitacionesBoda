@@ -60,11 +60,11 @@ body {
 
 .couple-names {
     font-family: 'Dancing Script', cursive;
-    font-size: clamp(3.5em, 8vw, 4.8em); /* Tamaño responsivo */
+    font-size: clamp(3em, 8vw, 4.8em); /* Tamaño responsivo */
     color: #4a5a42;
     margin: 35px 0 40px 0;
     line-height: 0.85; /* Ajustado para mejor espaciado vertical */
-    font-weight: 700;
+    font-weight: 7600;
     text-shadow: 0 3px 6px rgba(0,0,0,0.15);
     letter-spacing: 1px; /* Reducido de 2px para mejor ajuste */
     word-spacing: -3px; /* Agregar espaciado negativo entre palabras */
@@ -78,7 +78,7 @@ body {
     color: #9aa491; /* Color más suave */
     margin-bottom: 20px;
     line-height: 1.3;
-    font-weight: 400;
+    font-weight: 900;
     letter-spacing: 3px; /* Más espaciado */
     text-transform: uppercase;
     opacity: 0.8; /* Más sutil */
@@ -99,19 +99,47 @@ body {
 
 .parents-label {
     font-weight: 500; /* Más peso para las etiquetas */
-    color: #7a8471; /* Color ligeramente diferente */
+    color: #6b6a6a; /* Color ligeramente diferente */
+    font-size: 1.2em; /* Ligeramente más grande que el texto normal */
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.title-parents{
+    font-weight: 600; /* Más peso para el título */
+    color: #6b6a6a; /* Color ligeramente diferente */
+    font-size: 1em; /* Ligeramente más grande que el texto normal */
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.parents-names {
+    font-weight: 500; /* Más peso para las etiquetas */
+    color: #696464; /* Color ligeramente diferente */
     font-size: 1.05em; /* Ligeramente más grande que el texto normal */
     letter-spacing: 0.5px;
 }
 
+.subtext-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85em;
+    color: #8a9481;
+    margin-bottom: 15px;
+    font-weight: 400;
+    opacity: 0.9;
+    text-align: center;
+}
+
 .wedding-date {
     font-family: 'Playfair Display', serif;
-    font-size: 1.25em; /* Ligeramente más grande */
-    color: #6a7a61; /* Color más intenso */
-    font-weight: 400; /* Más peso */
-    letter-spacing: 2px; /* Más espaciado */
-    margin-top: 25px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Sombra sutil */
+    font-size: 1.1em;
+    color: #7a8471;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.date{
+    font-size: 2em;
 }
 
 .cover-section {
@@ -150,14 +178,6 @@ body {
 /* Asegurar que el contenedor de nombres tenga posición relativa */
 .couple-names {
     position: relative;
-}
-
-.wedding-date {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1em;
-    color: #7a8471;
-    font-weight: 300;
-    letter-spacing: 1px;
 }
 
 .quote-section {
@@ -201,6 +221,11 @@ body {
     margin-bottom: 15px;
 }
 
+.dress-code{
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5em;
+}
+
 .location-button {
     background: #a8b8a0;
     color: white;
@@ -225,7 +250,7 @@ body {
 }
 
 .icon-placeholder {
-    width: 40px;
+    width: 60px;
     height: 60px;
     background: #a8b8a0;
     border-radius: 5px;
@@ -442,6 +467,9 @@ body {
 
 .padrino-item {
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     padding: 15px;
     background: #f8f7f4;
     border-radius: 8px;
@@ -449,18 +477,26 @@ body {
     width: 100%;
 }
 
+.padrino-icon {
+    flex-shrink: 0;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .padrino-tipo {
     font-family: 'Dancing Script', cursive;
     font-weight: 600;
     color: #5a6b52;
-    font-size: 1.2em;
+    font-size: 1.5em;
     /* text-transform: uppercase; */
     letter-spacing: 1px;
     margin-bottom: 8px;
 }
 
 .padrino-nombres {
-    font-size: 0.75em;
+    font-size: 1em;
     color: #6b7a62;
 }
 
@@ -470,20 +506,38 @@ body {
     height: 300px;
     object-fit: cover;
     object-position: center center;
-    border-radius: 10px;
+    border-radius: 0; /* Cambiar de 10px a 0 para que llegue hasta los bordes */
     display: block;
-    margin: 20px 0;
+    margin: 0; /* Eliminar márgenes para ocupar todo el ancho */
 }
 
 .couple-photo-container {
     width: 100%;
     height: 300px;
-    border-radius: 10px;
     overflow: hidden;
-    margin: 20px 0;
+    margin: 0; /* Eliminar margen */
+    padding: 0; /* Asegurar que no hay padding */
 }
 
 /* Ajuste para la sección de foto */
 .photo-section {
-    padding: 20px 30px;
+    padding: 0; /* Eliminar padding completamente para que la imagen llegue a los bordes */
+}
+
+.gifts-text{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    color: #6b7a62;
+    line-height: 1.6;
+}
+
+.amazon-button {
+    background: rgba(255,255,255,0.2) !important;
+    border-color: rgba(255,255,255,0.5) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.amazon-button:active {
+    transform: translateY(0);
 }
