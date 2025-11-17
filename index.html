@@ -28,11 +28,9 @@
     </div>
 
     <div class="invitation-container" id="invitation-content">
-        <!-- Decoraciones de hojas -->
-        <div class="leaf-decoration leaf-top-right"></div>
-        <div class="leaf-decoration leaf-bottom-left"></div>
-        
-        <!-- Sección de portada -->
+        <div class="invitation-content">
+            
+            <!-- Sección de portada -->
         <div class="section cover-section">
             <div class="couple-names-title">
                 Nuestra Boda<br>
@@ -402,9 +400,10 @@
                     class="couple-photo">
         </div>
         <!-- CREDITOS -->
-        <div class="section rsvp-section" style="font-size: 0.6em; color: white; text-align: center;">
+        <div class="section rsvp-section" style="font-size: 0.6em; color: white; text-align: center; padding-bottom: 100px;">
             Diseñado y desarrollado por: <br> Maximiliano Retana & Berenice Carmona
         </div>
+        </div> <!-- Cierre del invitation-content -->
     </div>
 
     <script>
@@ -428,21 +427,52 @@
                 setTimeout(() => {
                     envelopeContainer.classList.add('opened');
                     invitationContent.classList.add('visible');
+                    
+                    // Deshabilitar el scroll del body para evitar conflictos
+                    document.body.classList.add('envelope-opened');
+                    
+                    // Asegurar que el scroll esté en la parte superior del contenedor interno
+                    const innerContent = document.querySelector('.invitation-content');
+                    if (innerContent) {
+                        innerContent.scrollTop = 0;
+                    }
+                    
+                    // Configurar los listeners del timeline SOLO después de abrir el sobre
+                    setupTimelineListeners();
                 }, 600);
             }
 
-            // Detectar scroll para abrir el sobre
-            function handleScroll() {
-                if (!envelopeOpened && window.scrollY > 50) {
-                    openEnvelope();
+            // Detectar intentos de scroll o gestos para abrir el sobre
+            function handleWheelOrTouch(event) {
+                if (!envelopeOpened) {
+                    // Detectar movimiento hacia abajo (rueda del mouse o deslizar)
+                    if (event.deltaY > 0 || (event.touches && event.touches.length > 0)) {
+                        openEnvelope();
+                    }
                 }
             }
 
-            // Detectar scroll con debounce
-            window.addEventListener('scroll', () => {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(handleScroll, 10);
-            });
+            // Detectar rueda del mouse
+            window.addEventListener('wheel', handleWheelOrTouch, { passive: true });
+            
+            // Detectar eventos táctiles para móviles
+            let touchStartY = 0;
+            
+            envelopeContainer.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            envelopeContainer.addEventListener('touchmove', (e) => {
+                if (!envelopeOpened) {
+                    const touchEndY = e.touches[0].clientY;
+                    const deltaY = touchStartY - touchEndY;
+                    
+                    // Si desliza hacia arriba (equivalente a scroll hacia abajo)
+                    if (deltaY > 50) {
+                        openEnvelope();
+                    }
+                }
+            }, { passive: true });
 
             // También permitir hacer clic para abrir
             envelopeContainer.addEventListener('click', openEnvelope);
@@ -607,47 +637,24 @@
         
         // Función para configurar los event listeners del timeline
         function setupTimelineListeners() {
-            const invitationContainer = document.getElementById('invitation-content');
+            const invitationContainer = document.querySelector('.invitation-content');
             
-            // Escuchar el scroll del contenedor de invitación
+            // Solo escuchar el scroll del contenedor interno (no el global)
             if (invitationContainer) {
                 invitationContainer.addEventListener('scroll', throttledAnimateTimeline);
             }
             
-            // También mantener el listener global por si acaso
-            window.addEventListener('scroll', throttledAnimateTimeline);
+            // Mantener el listener de resize
             window.addEventListener('resize', animateTimeline);
+            
+            // Ejecutar una vez para inicializar
+            setTimeout(animateTimeline, 100);
+            setTimeout(animateTimeline, 300);
+            setTimeout(animateTimeline, 500);
         }
         
-        // Configurar listeners y ejecutar animaciones al cargar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar los event listeners del timeline
-            setupTimelineListeners();
-            
-            // Función para inicializar el timeline después de que el sobre se abra
-            function initTimelineAfterEnvelope() {
-                if (envelopeOpened) {
-                    setTimeout(animateTimeline, 100);
-                    setTimeout(animateTimeline, 300);
-                    setTimeout(animateTimeline, 500);
-                } else {
-                    // Reintentar cada 100ms hasta que el sobre se abra
-                    setTimeout(initTimelineAfterEnvelope, 100);
-                }
-            }
-            
-            // Iniciar la verificación
-            initTimelineAfterEnvelope();
-            
-            // También ejecutar después de que las imágenes se carguen
-            window.addEventListener('load', () => {
-                setTimeout(() => {
-                    if (envelopeOpened) {
-                        animateTimeline();
-                    }
-                }, 100);
-            });
-        });
+        // La configuración del timeline ahora se hace solo después de abrir el sobre
+        // Ya no es necesario configurar listeners prematuramente
     </script>
 </body>
 </html>
