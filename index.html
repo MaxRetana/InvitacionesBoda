@@ -8,7 +8,26 @@
     <link rel="stylesheet" href="boda.css">
 </head>
 <body>
-    <div class="invitation-container">
+    <!-- Animación del sobre -->
+    <div id="envelope-container" class="envelope-container">
+        <!-- Sobre cerrado -->
+        <div class="envelope-wrapper">
+            <div class="envelope-back"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-flap"></div>
+            <div class="envelope-seal">
+                <div class="heart">♥</div>
+            </div>
+        </div>
+        
+        <!-- Texto de instrucción -->
+        <div class="scroll-instruction">
+            <p>Desliza hacia abajo para abrir</p>
+            <div class="scroll-arrow">↓</div>
+        </div>
+    </div>
+
+    <div class="invitation-container" id="invitation-content">
         <!-- Decoraciones de hojas -->
         <div class="leaf-decoration leaf-top-right"></div>
         <div class="leaf-decoration leaf-bottom-left"></div>
@@ -210,7 +229,6 @@
         <div class="section">
             <div class="section-title-schedule">TE COMPARTIMOS LOS DETALLES DE LA CELEBRACIÓN</div>
             <div class="timeline-container">
-                
                 <div class="timeline-item" data-index="0">
                     <div class="timeline-dot">
                         <span class="timeline-number">♡</span>
@@ -244,7 +262,7 @@
                     </div>
                     <div class="timeline-content">
                         <div class="timeline-time">8:30 PM</div>
-                        <div class="timeline-event">Brindis y Vals</div>
+                        <div class="timeline-event">Brindis y vals</div>
                     </div>
                 </div>
                 <div class="timeline-item" data-index="4">
@@ -290,7 +308,7 @@
                 </span> 
                 <br> 
                 <span class="gifts-text">
-                    O, si lo prefieren, visitar nuestra mesa de regalos en Amazon, donde seleccionamos algunos detalles que nos ayudarán a comenzar esta nueva etapa juntos.
+                    O, si lo prefieren pueden visitar nuestra mesa de regalos en Amazon, donde seleccionamos algunos detalles que nos ayudarán a comenzar esta nueva etapa juntos.
                 </span>
                 <br> 
                 <a href="https://www.amazon.com.mx/wedding/registry/3TH286IOUNYQ3" target="_blank" class="amazon-button" style="display: inline-block; text-decoration: none; background: rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 10px; margin: 15px 0; transition: all 0.3s ease; border: 2px solid rgba(255,255,255,0.3);">
@@ -390,6 +408,56 @@
     </div>
 
     <script>
+        // Animación del sobre
+        let envelopeOpened = false;
+        let scrollTimeout;
+
+        function initEnvelopeAnimation() {
+            const envelopeContainer = document.getElementById('envelope-container');
+            const envelopeWrapper = document.querySelector('.envelope-wrapper');
+            const invitationContent = document.getElementById('invitation-content');
+
+            // Función para abrir el sobre
+            function openEnvelope() {
+                if (envelopeOpened) return;
+                
+                envelopeOpened = true;
+                envelopeWrapper.classList.add('opening');
+                
+                // Después de la animación de apertura, ocultar el sobre y mostrar la invitación
+                setTimeout(() => {
+                    envelopeContainer.classList.add('opened');
+                    invitationContent.classList.add('visible');
+                }, 600);
+            }
+
+            // Detectar scroll para abrir el sobre
+            function handleScroll() {
+                if (!envelopeOpened && window.scrollY > 50) {
+                    openEnvelope();
+                }
+            }
+
+            // Detectar scroll con debounce
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(handleScroll, 10);
+            });
+
+            // También permitir hacer clic para abrir
+            envelopeContainer.addEventListener('click', openEnvelope);
+
+            // Abrir automáticamente después de 3 segundos si no hay interacción
+            setTimeout(() => {
+                if (!envelopeOpened) {
+                    openEnvelope();
+                }
+            }, 3000);
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', initEnvelopeAnimation);
+
         // Función para actualizar el contador
         function updateCountdown() {
             const weddingDate = new Date('2026-01-31T18:00:00');
@@ -469,7 +537,7 @@
             });
         });
         
-        // Animación del timeline al hacer scroll - MEJORADO
+        // Animación del timeline al hacer scroll - CORREGIDO para funcionar con el sobre
         function animateTimeline() {
             const timelineContainer = document.querySelector('.timeline-container');
             if (!timelineContainer) return;
@@ -477,19 +545,24 @@
             const timelineProgress = document.querySelector('.timeline-progress');
             const timelineItems = document.querySelectorAll('.timeline-item');
             const timelineDots = document.querySelectorAll('.timeline-dot');
+            const invitationContainer = document.getElementById('invitation-content');
+            
+            // Si el sobre aún no se ha abierto, no animar el timeline
+            if (!envelopeOpened || !invitationContainer.classList.contains('visible')) {
+                return;
+            }
             
             const containerRect = timelineContainer.getBoundingClientRect();
             const containerTop = containerRect.top;
             const containerHeight = containerRect.height;
             const windowHeight = window.innerHeight;
             
-            // Mejorar el cálculo del progreso - más suave y predecible
+            // Mejorar el cálculo del progreso - ajustado para el nuevo layout
             let progress = 0;
             
-            // El contenedor está completamente visible
-            if (containerTop <= windowHeight * 0.5 && containerTop + containerHeight >= windowHeight * 0.5) {
-                // Calcular progreso basado en qué tan centrado está el timeline
-                const scrollProgress = Math.max(0, (windowHeight * 0.8 - containerTop) / (containerHeight + windowHeight * 0.4));
+            // Calcular el progreso basado en la posición del timeline dentro del contenedor de invitación
+            if (containerTop <= windowHeight * 0.7) {
+                const scrollProgress = Math.max(0, (windowHeight * 0.7 - containerTop) / (containerHeight + windowHeight * 0.3));
                 progress = Math.min(1, scrollProgress);
             }
             
@@ -532,20 +605,47 @@
             }
         }
         
-        // Ejecutar animación en scroll con throttling
-        window.addEventListener('scroll', throttledAnimateTimeline);
-        window.addEventListener('resize', animateTimeline);
+        // Función para configurar los event listeners del timeline
+        function setupTimelineListeners() {
+            const invitationContainer = document.getElementById('invitation-content');
+            
+            // Escuchar el scroll del contenedor de invitación
+            if (invitationContainer) {
+                invitationContainer.addEventListener('scroll', throttledAnimateTimeline);
+            }
+            
+            // También mantener el listener global por si acaso
+            window.addEventListener('scroll', throttledAnimateTimeline);
+            window.addEventListener('resize', animateTimeline);
+        }
         
-        // Ejecutar una vez al cargar - MEJORADO
+        // Configurar listeners y ejecutar animaciones al cargar
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar animación del timeline con múltiples checkpoints
-            setTimeout(animateTimeline, 100);
-            setTimeout(animateTimeline, 300);
-            setTimeout(animateTimeline, 500);
+            // Configurar los event listeners del timeline
+            setupTimelineListeners();
+            
+            // Función para inicializar el timeline después de que el sobre se abra
+            function initTimelineAfterEnvelope() {
+                if (envelopeOpened) {
+                    setTimeout(animateTimeline, 100);
+                    setTimeout(animateTimeline, 300);
+                    setTimeout(animateTimeline, 500);
+                } else {
+                    // Reintentar cada 100ms hasta que el sobre se abra
+                    setTimeout(initTimelineAfterEnvelope, 100);
+                }
+            }
+            
+            // Iniciar la verificación
+            initTimelineAfterEnvelope();
             
             // También ejecutar después de que las imágenes se carguen
             window.addEventListener('load', () => {
-                setTimeout(animateTimeline, 100);
+                setTimeout(() => {
+                    if (envelopeOpened) {
+                        animateTimeline();
+                    }
+                }, 100);
             });
         });
     </script>
