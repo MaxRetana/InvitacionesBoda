@@ -499,32 +499,22 @@
                 timelineProgress.style.transition = 'height 0.3s ease-out';
             }
             
-            // Animar los elementos del timeline con mejor distribución
+            // Animar los elementos del timeline con bidireccionalidad
             timelineItems.forEach((item, index) => {
                 // Calcular el punto de activación para cada elemento de forma más distribuida
                 const itemActivationPoint = (index / (timelineItems.length - 1)) * 0.8;
                 const shouldAnimate = progress >= itemActivationPoint;
-                const isLastItem = index === timelineItems.length - 1;
                 
-                // Sistema de "una vez animado, mantener animado" con threshold
-                const wasAnimated = item.classList.contains('animate');
-                
-                if (shouldAnimate || (wasAnimated && progress > itemActivationPoint * 0.7)) {
+                // Control bidireccional: aparece cuando debe aparecer, desaparece cuando no
+                if (shouldAnimate) {
+                    // Aparecer con delay escalonado solo si no está ya animado
                     if (!item.classList.contains('animate')) {
-                        // Añadir un pequeño delay escalonado para mejor efecto visual
                         setTimeout(() => {
                             item.classList.add('animate');
                             if (timelineDots[index]) {
                                 timelineDots[index].classList.add('animate');
                             }
                         }, index * 100);
-                    }
-                } else if (progress < itemActivationPoint * 0.3 && !isLastItem) {
-                    // Solo remover la animación si el scroll retrocede significativamente
-                    // EXCEPTO para el último elemento que permanece siempre visible una vez animado
-                    item.classList.remove('animate');
-                    if (timelineDots[index]) {
-                        timelineDots[index].classList.remove('animate');
                     }
                 }
             });
