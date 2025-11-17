@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="boda.css">
 </head>
 <body>
+    <!-- Control de música de fondo -->
+    <div class="music-control" id="musicControl">
+        <button id="musicButton" class="music-button">
+            <span class="music-icon">🎵</span>
+        </button>
+    </div>
+    
+    <!-- Audio de fondo -->
+    <audio id="backgroundMusic" loop>
+        <source src="Cancion.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
     <!-- Animación del sobre -->
     <div id="envelope-container" class="envelope-container">
         <!-- Sobre cerrado -->
@@ -110,8 +122,9 @@
 
         <!-- Sección de padrinos -->
         <div class="section">
-            <div class="section-title">PADRINOS</div>
+            
             <div class="padrinos-container">
+                <div class="section-title">PADRINOS</div>
                 <div class="padrino-item">
                     <div class="padrino-icon">
                         <img src="velacion.png" alt="velacion icon" style="width:50px; height: 50px; opacity: 0.7;">
@@ -476,17 +489,95 @@
 
             // También permitir hacer clic para abrir
             envelopeContainer.addEventListener('click', openEnvelope);
-
-            // Abrir automáticamente después de 3 segundos si no hay interacción
-            setTimeout(() => {
-                if (!envelopeOpened) {
-                    openEnvelope();
-                }
-            }, 3000);
         }
 
         // Inicializar cuando se carga la página
         document.addEventListener('DOMContentLoaded', initEnvelopeAnimation);
+
+        // Control de música de fondo
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicButton = document.getElementById('musicButton');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const musicIcon = document.querySelector('.music-icon');
+            let isPlaying = false;
+
+            // Configurar volumen inicial
+            backgroundMusic.volume = 0.3; // 30% del volumen máximo
+
+            // Configurar estado inicial del botón como activo
+            musicIcon.textContent = '🎶';
+            musicButton.classList.add('playing');
+
+            // Función para reproducir/pausar música
+            function toggleMusic() {
+                if (isPlaying) {
+                    backgroundMusic.pause();
+                    musicIcon.textContent = '🎵';
+                    musicButton.classList.remove('playing');
+                    isPlaying = false;
+                } else {
+                    backgroundMusic.play().then(() => {
+                        musicIcon.textContent = '🎶';
+                        musicButton.classList.add('playing');
+                        isPlaying = true;
+                    }).catch(error => {
+                        console.log('Error al reproducir música:', error);
+                    });
+                }
+            }
+
+            // Event listener para el botón de música
+            musicButton.addEventListener('click', toggleMusic);
+
+            // Intentar reproducir música automáticamente cuando se abre el sobre
+            function tryAutoplayMusic() {
+                if (!isPlaying) {
+                    backgroundMusic.play().then(() => {
+                        musicIcon.textContent = '🎶';
+                        musicButton.classList.add('playing');
+                        isPlaying = true;
+                    }).catch(error => {
+                        // Si no se puede reproducir automáticamente, mantener el botón visible
+                        console.log('Autoplay bloqueado, el usuario debe activar la música manualmente');
+                        // Mantener la apariencia visual de "activado" aunque no esté reproduciendo
+                        musicIcon.textContent = '🎶';
+                        musicButton.classList.add('playing');
+                    });
+                }
+            }
+
+            // Intentar iniciar música automáticamente cuando se abre el sobre
+            setTimeout(() => {
+                if (envelopeOpened) {
+                    tryAutoplayMusic();
+                }
+            }, 1000);
+
+            // Iniciar música automáticamente al cargar la página
+            setTimeout(() => {
+                tryAutoplayMusic();
+            }, 2000);
+
+            // Intentar reproducir música en cualquier interacción del usuario
+            function enableMusicOnInteraction() {
+                if (!isPlaying) {
+                    backgroundMusic.play().then(() => {
+                        isPlaying = true;
+                        musicIcon.textContent = '🎶';
+                        musicButton.classList.add('playing');
+                        console.log('Música iniciada después de interacción del usuario');
+                    }).catch(error => {
+                        console.log('Error al iniciar música:', error);
+                    });
+                }
+            }
+
+            // Agregar listeners para diferentes tipos de interacción
+            document.addEventListener('click', enableMusicOnInteraction, { once: true });
+            document.addEventListener('scroll', enableMusicOnInteraction, { once: true });
+            document.addEventListener('touchstart', enableMusicOnInteraction, { once: true });
+            document.addEventListener('keydown', enableMusicOnInteraction, { once: true });
+        });
 
         // Función para actualizar el contador
         function updateCountdown() {
