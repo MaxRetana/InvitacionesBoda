@@ -82,12 +82,13 @@ body {
 }
 
 .envelope-seal {
+    font-family: 'Courier New', Courier, monospace;
     position: absolute;
     top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     background: #a8b8a0;
     border-radius: 50%;
     z-index: 5;
@@ -111,6 +112,8 @@ body {
 
 .envelope-wrapper.opening .envelope-seal {
     transform: translateX(-50%) rotateX(-180deg);
+    /* Que no se vea */
+    opacity: 0;
 }
 
 .envelope-wrapper.opening .envelope-front {
@@ -162,8 +165,8 @@ body {
     }
     
     .envelope-seal {
-        width: 40px;
-        height: 40px;
+        width: 100px;
+        height: 100px;
         top: 35px;
     }
     
