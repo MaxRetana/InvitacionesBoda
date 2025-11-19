@@ -58,7 +58,7 @@
                 <br>
                 <br>
                 <span class="parents-label">Padres de la Novia:</span><br>
-                <span class="parents-names">José Porfirio Carmona Santiago <br> Ma. Mercedes Castellanos Iñiguez</span>
+                <span class="parents-names">José Porfirio Carmona de Santiago <br> Ma. Mercedes Castellanos Iñiguez</span>
                 <br>
                 <br>
                 <span class="parents-label">Padres del Novio:</span><br>
@@ -140,7 +140,7 @@
                     </div>
                     <div class="padrino-content">
                         <div class="padrino-tipo">Anillos</div>
-                        <div class="padrino-nombres">Heriberto López Armenta <br> Ana Luisa Rolón</div>
+                        <div class="padrino-nombres">Heriberto López Armenta <br> Ana Luisa Rolón Maciel</div>
                     </div>
                 </div>
                 <div class="padrino-item">
@@ -158,7 +158,7 @@
                     </div>
                     <div class="padrino-content">
                         <div class="padrino-tipo">Lazo</div>
-                        <div class="padrino-nombres">Juan Moctezuma Ramírez <br> Ma. del Refugio Castellanos Iñiguez</div>
+                        <div class="padrino-nombres">Juan Moctezuma Ramírez <br> María del Refugio Castellanos Iñiguez</div>
                     </div>
                 </div>
             </div>
@@ -610,8 +610,39 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
         
+        // Función para obtener parámetros de la URL
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // Función para llenar el nombre desde la URL
+        function fillNameFromURL() {
+            const nombreFromURL = getURLParameter('nombre');
+            const nombreInput = document.getElementById('nombre');
+            
+            if (nombreFromURL && nombreInput) {
+                // Decodificar la URL en caso de que tenga caracteres especiales
+                const nombreDecoded = decodeURIComponent(nombreFromURL);
+                nombreInput.value = nombreDecoded;
+                // Hacer el campo readonly cuando viene de la URL
+                nombreInput.readOnly = true;
+                // Cambiar el estilo para indicar que es readonly
+                nombreInput.style.backgroundColor = '#f0f0f0';
+                nombreInput.style.color = '#666';
+            } else if (nombreInput) {
+                // Si no hay nombre en la URL, permitir edición
+                nombreInput.readOnly = false;
+                nombreInput.style.backgroundColor = 'white';
+                nombreInput.style.color = 'black';
+            }
+        }
+
         // Manejar el formulario RSVP
         document.addEventListener('DOMContentLoaded', function() {
+            // Llenar el nombre desde la URL al cargar la página
+            fillNameFromURL();
+            
             const asistenciaSelect = document.getElementById('asistencia');
             const cantidadPersonasDiv = document.getElementById('cantidadPersonas');
             const rsvpForm = document.getElementById('rsvpForm');
