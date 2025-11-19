@@ -140,7 +140,7 @@
                     </div>
                     <div class="padrino-content">
                         <div class="padrino-tipo">Anillos</div>
-                        <div class="padrino-nombres">Heriberto López Armenta <br> Ana Luisa Rolón Maciel</div>
+                        <div class="padrino-nombres">Ana Luisa Rolón Maciel <br> Heriberto López Armenta</div>
                     </div>
                 </div>
                 <div class="padrino-item">
@@ -149,7 +149,7 @@
                     </div>
                     <div class="padrino-content">
                         <div class="padrino-tipo">Arras</div>
-                        <div class="padrino-nombres">Salvador Castellanos Iñiguez <br> Ofelia Curiel Lares</div>
+                        <div class="padrino-nombres">Ofelia Curiel Lares <br> Salvador Castellanos Iñiguez</div>
                     </div>
                 </div>
                 <div class="padrino-item">
@@ -158,7 +158,7 @@
                     </div>
                     <div class="padrino-content">
                         <div class="padrino-tipo">Lazo</div>
-                        <div class="padrino-nombres">Juan Moctezuma Ramírez <br> María del Refugio Castellanos Iñiguez</div>
+                        <div class="padrino-nombres">María del Refugio Castellanos Iñiguez <br> Juan Moctezuma Ramírez</div>
                     </div>
                 </div>
             </div>
@@ -342,7 +342,19 @@
             
             <!-- Formulario de confirmación -->
             <form id="rsvpForm" action="https://formspree.io/f/movkyprl" method="POST" style="text-align: left; max-width: 300px; margin: 0 auto;">
-                <div style="margin-bottom: 15px;">
+                <!-- Saludo personalizado para el invitado -->
+                <div id="saludoPersonalizado" style="margin-bottom: 20px; text-align: center; display: none;">
+                    <div style="color: white; font-size: 1.1em; font-weight: 600; margin-bottom: 10px;">
+                        ¡Hola, <span id="nombreInvitado"></span>!
+                    </div>
+                    <div style="color: rgba(255,255,255,0.9); font-size: 0.95em; line-height: 1.4;">
+                        Nos llena de alegría saber que <span id="eresOparte">eres parte</span> de este momento tan especial. 
+                        <span id="presenciaTexto">Tu presencia</span> hará que nuestro día sea aún más memorable. 
+                        Por favor, <span id="confirmaTexto">confirma tu asistencia</span> para que podamos preparar todo con el cariño que <span id="merecesTexto">te mereces</span>.
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px; display: none;">
                     <label for="nombre" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">Nombre completo:</label>
                     <input type="text" id="nombre" name="nombre" required style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em;">
                 </div>
@@ -357,8 +369,9 @@
                 </div>
                 
                 <div id="cantidadPersonas" style="margin-bottom: 15px; display: none;">
-                    <label for="personas" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">¿Cuántos acompañantes tendrás?</label>
-                    <select id="personas" name="personas" style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em;">
+                    <label for="personas" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">Boletos Reservados</label>
+                    <select id="personas" name="personas" required style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em;">
+                        <option value="0" style="display: none;">No asiste</option>
                         <option value="1">1 persona</option>
                         <option value="2">2 personas</option>
                         <option value="3">3 personas</option>
@@ -373,12 +386,27 @@
                 
                 <div style="margin-bottom: 20px;">
                     <label for="comentarios" style="display: block; color: white; margin-bottom: 5px; font-size: 0.9em;">Comentarios (opcional):</label>
-                    <textarea id="comentarios" name="comentarios" rows="3" style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em; resize: vertical;" placeholder="Alergias alimentarias, necesidades especiales, etc."></textarea>
+                    <textarea id="comentarios" name="comentarios" rows="3" style="width: 100%; padding: 8px; border: none; border-radius: 5px; font-size: 0.9em; resize: vertical;" placeholder="En dado caso de que se necesiten menos boletos, dejanos un comentario."></textarea>
                 </div>
                 
-                <button type="submit" style="width: 100%; background: white; color: #a8b8a0; padding: 12px; border: none; border-radius: 25px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                    Confirmar Asistencia
+                <button type="submit" id="submitButton" style="width: 100%; background: white; color: #a8b8a0; padding: 12px; border: none; border-radius: 25px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s; position: relative;">
+                    <span id="buttonText">Confirmar Asistencia</span>
+                    <span id="loadingSpinner" style="display: none;">
+                        <span style="display: inline-block; width: 20px; height: 20px; border: 2px solid #a8b8a0; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; margin-right: 8px;"></span>
+                        Enviando...
+                    </span>
                 </button>
+                
+                <style>
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+                .button-disabled {
+                    opacity: 0.6 !important;
+                    cursor: not-allowed !important;
+                    pointer-events: none;
+                }
+                </style>
             </form>
             
             <!-- Mensaje de confirmación -->
@@ -616,11 +644,18 @@
             return urlParams.get(name);
         }
         
-        // Función para llenar el nombre desde la URL
-        function fillNameFromURL() {
+        // Función para llenar el nombre y cantidad de invitados desde la URL
+        function fillFormFromURL() {
             const nombreFromURL = getURLParameter('nombre');
+            const invitadosFromURL = getURLParameter('invitados');
             const nombreInput = document.getElementById('nombre');
+            const personasSelect = document.getElementById('personas');
+            const asistenciaSelect = document.getElementById('asistencia');
+            const cantidadPersonasDiv = document.getElementById('cantidadPersonas');
+            const saludoPersonalizado = document.getElementById('saludoPersonalizado');
+            const nombreInvitado = document.getElementById('nombreInvitado');
             
+            // Llenar nombre y mostrar saludo personalizado
             if (nombreFromURL && nombreInput) {
                 // Decodificar la URL en caso de que tenga caracteres especiales
                 const nombreDecoded = decodeURIComponent(nombreFromURL);
@@ -630,18 +665,70 @@
                 // Cambiar el estilo para indicar que es readonly
                 nombreInput.style.backgroundColor = '#f0f0f0';
                 nombreInput.style.color = '#666';
+                
+                // Mostrar saludo personalizado
+                if (saludoPersonalizado && nombreInvitado) {
+                    nombreInvitado.textContent = nombreDecoded;
+                    
+                    // Verificar si el nombre contiene "familia" o "Familia"
+                    const esFamilia = nombreDecoded.toLowerCase().includes('familia');
+                    
+                    // Obtener los elementos de texto que se van a modificar
+                    const eresOparte = document.getElementById('eresOparte');
+                    const presenciaTexto = document.getElementById('presenciaTexto');
+                    const confirmaTexto = document.getElementById('confirmaTexto');
+                    const merecesTexto = document.getElementById('merecesTexto');
+                    
+                    if (esFamilia) {
+                        // Usar "su" para familias
+                        if (eresOparte) eresOparte.textContent = 'son parte';
+                        if (presenciaTexto) presenciaTexto.textContent = 'Su presencia';
+                        if (confirmaTexto) confirmaTexto.textContent = 'confirmen su asistencia';
+                        if (merecesTexto) merecesTexto.textContent = 'se merecen';
+                    } else {
+                        // Usar "tu" para individuos
+                        if (eresOparte) eresOparte.textContent = 'eres parte';
+                        if (presenciaTexto) presenciaTexto.textContent = 'Tu presencia';
+                        if (confirmaTexto) confirmaTexto.textContent = 'confirma tu asistencia';
+                        if (merecesTexto) merecesTexto.textContent = 'te mereces';
+                    }
+                    
+                    saludoPersonalizado.style.display = 'block';
+                }
             } else if (nombreInput) {
-                // Si no hay nombre en la URL, permitir edición
+                // Si no hay nombre en la URL, permitir edición y ocultar saludo
                 nombreInput.readOnly = false;
                 nombreInput.style.backgroundColor = 'white';
                 nombreInput.style.color = 'black';
+                
+                if (saludoPersonalizado) {
+                    saludoPersonalizado.style.display = 'none';
+                }
+            }
+            
+            // Llenar cantidad de invitados
+            if (invitadosFromURL && personasSelect) {
+                const cantidadInvitados = parseInt(invitadosFromURL);
+                // Validar que sea un número válido entre 1 y 9
+                if (cantidadInvitados >= 1 && cantidadInvitados <= 9) {
+                    // Preseleccionar la cantidad de invitados (pero no mostrar el campo aún)
+                    personasSelect.value = cantidadInvitados.toString();
+                    // Hacer readonly el campo de personas cuando viene de la URL
+                    personasSelect.disabled = true;
+                    // Cambiar estilo para indicar que es readonly
+                    personasSelect.style.backgroundColor = '#f0f0f0';
+                    personasSelect.style.color = '#666';
+                    
+                    // Guardar la cantidad para usarla cuando seleccionen "sí"
+                    personasSelect.setAttribute('data-from-url', 'true');
+                }
             }
         }
 
         // Manejar el formulario RSVP
         document.addEventListener('DOMContentLoaded', function() {
-            // Llenar el nombre desde la URL al cargar la página
-            fillNameFromURL();
+            // Llenar el formulario desde la URL al cargar la página
+            fillFormFromURL();
             
             const asistenciaSelect = document.getElementById('asistencia');
             const cantidadPersonasDiv = document.getElementById('cantidadPersonas');
@@ -650,12 +737,15 @@
             
             // Mostrar/ocultar campo de cantidad de personas
             asistenciaSelect.addEventListener('change', function() {
+                const personasSelect = document.getElementById('personas');
                 if (this.value === 'si') {
                     cantidadPersonasDiv.style.display = 'block';
-                    document.getElementById('personas').required = true;
+                    personasSelect.required = true;
                 } else {
                     cantidadPersonasDiv.style.display = 'none';
-                    document.getElementById('personas').required = false;
+                    personasSelect.required = false;
+                    // Establecer un valor por defecto cuando no asiste para que se registre en Formspree
+                    personasSelect.value = '0';
                 }
             });
             
@@ -663,7 +753,27 @@
             rsvpForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
+                const submitButton = document.getElementById('submitButton');
+                const buttonText = document.getElementById('buttonText');
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                
+                // Activar estado de loading
+                submitButton.classList.add('button-disabled');
+                buttonText.style.display = 'none';
+                loadingSpinner.style.display = 'inline-block';
+                
                 const formData = new FormData(rsvpForm);
+                
+                // Asegurar que el campo personas siempre se incluya
+                const asistenciaValue = document.getElementById('asistencia').value;
+                const personasValue = document.getElementById('personas').value;
+                
+                // Si no asiste, forzar el valor a 0
+                if (asistenciaValue === 'no') {
+                    formData.set('personas', '0');
+                } else if (asistenciaValue === 'si' && personasValue) {
+                    formData.set('personas', personasValue);
+                }
                 
                 // Enviar datos a Formspree
                 fetch(rsvpForm.action, {
@@ -675,14 +785,31 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        // Mostrar mensaje de confirmación
-                        rsvpForm.style.display = 'none';
-                        mensajeConfirmacion.style.display = 'block';
+                        // Cambiar texto del botón a éxito antes de ocultar el formulario
+                        loadingSpinner.style.display = 'none';
+                        buttonText.textContent = '¡Confirmado!';
+                        buttonText.style.display = 'inline-block';
+                        submitButton.style.background = '#4CAF50';
+                        submitButton.style.color = 'white';
+                        
+                        // Después de 1.5 segundos, mostrar el mensaje de confirmación
+                        setTimeout(() => {
+                            rsvpForm.style.display = 'none';
+                            mensajeConfirmacion.style.display = 'block';
+                        }, 1500);
                     } else {
                         throw new Error('Error al enviar el formulario');
                     }
                 })
                 .catch(error => {
+                    // Restaurar estado del botón en caso de error
+                    submitButton.classList.remove('button-disabled');
+                    loadingSpinner.style.display = 'none';
+                    buttonText.textContent = 'Confirmar Asistencia';
+                    buttonText.style.display = 'inline-block';
+                    submitButton.style.background = 'white';
+                    submitButton.style.color = '#a8b8a0';
+                    
                     alert('Hubo un problema al enviar tu confirmación. Por favor intenta nuevamente o contacta directamente a los novios.');
                     console.error('Error:', error);
                 });
